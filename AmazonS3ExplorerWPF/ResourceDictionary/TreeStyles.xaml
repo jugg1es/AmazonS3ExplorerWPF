@@ -1,0 +1,73 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:AmazonS3ExplorerWPF">
+
+
+        <TreeViewItem x:Key="CustomRootNode">
+            <TreeViewItem.Header>
+                <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
+                    <Image   Source="/Images/WinFolder.gif" Width="16" Height="16" />
+                    <TextBlock Margin="2,0,0,0"  VerticalAlignment="Center"  FontWeight="Bold" Text="Folders"  />
+                </StackPanel>
+            </TreeViewItem.Header>
+        </TreeViewItem>
+    
+    <Style x:Key="SimpleTreeStyle" TargetType="{x:Type TreeView}">
+        <Setter Property="Background">
+            <Setter.Value>
+                <SolidColorBrush Color="#FFF"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="BorderThickness"  Value="4" />
+        <Setter Property="BorderBrush"    Value="#FFA6AAAB" />
+    </Style>
+    
+    <ContextMenu x:Key="AmazonFileItemContextMenu"  >
+        <MenuItem Header="New Folder" Command="local:TreeCommands.NewFolder"></MenuItem>
+        <MenuItem Header="Rename Folder" Command="local:TreeCommands.RenameFolder" ></MenuItem>
+        <MenuItem Header="Download Folder" Command="local:TreeCommands.DownloadFolder"></MenuItem>
+            <Separator></Separator>
+            <MenuItem Header="Cut" Command="ApplicationCommands.Cut"></MenuItem>
+            <MenuItem Header="Copy" Command="ApplicationCommands.Copy"></MenuItem>
+            <MenuItem Header="Paste" Command="ApplicationCommands.Paste"></MenuItem>
+            <Separator></Separator>
+        <MenuItem Header="Delete Directory"  Command="local:TreeCommands.DeleteFolder"></MenuItem>
+        </ContextMenu>
+
+        <DataTemplate x:Key="AmazonFolderTemplate"
+                DataType="{x:Type local:FolderTreeViewModel}">
+            <StackPanel x:Name="GroupPanel"   Orientation="Horizontal"  Margin="0,2,0,2">
+
+                <Image x:Name="Folder"
+             Source="/Images/FolderClosed.png" />
+                <TextBlock x:Name="Name" Margin="2,0,0,0" Text="{Binding Path=DisplayName}" Padding="3" />
+            </StackPanel>
+
+            <DataTemplate.Triggers>
+
+                <DataTrigger Binding="{Binding Path=IsExpanded, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                   Value="True">
+                    <Setter Property="Source" TargetName="Folder"  Value="/Images/FolderOpen.png" />
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  Value="True">
+                    <Setter Property="Source"  TargetName="Folder" Value="/Images/FolderSelected.png" />
+                </DataTrigger>
+
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        <Style x:Key="AmazonSimpleFolders" TargetType="{x:Type TreeViewItem}">
+
+            <Style.Resources>
+                <!-- override default brushes that show bad background colors 
+                <Brush x:Key="{x:Static SystemColors.HighlightBrushKey}">Transparent</Brush>
+                <Brush x:Key="{x:Static SystemColors.ControlBrushKey}">Transparent</Brush>-->
+            </Style.Resources>
+            <Setter Property="HeaderTemplate" Value="{StaticResource AmazonFolderTemplate}" />
+            <Setter Property="ContextMenu" Value="{StaticResource AmazonFileItemContextMenu}"/>
+
+
+        </Style>
+
+        
+    </ResourceDictionary>

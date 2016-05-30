@@ -1,0 +1,97 @@
+﻿<UserControl x:Class="AmazonS3ExplorerWPF.Controls.AmazonFileManagerControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Adorner="clr-namespace:AmazonS3ExplorerWPF.Controls.Adorner"
+             xmlns:AmazonS3ExplorerWPF="clr-namespace:AmazonS3ExplorerWPF"
+             mc:Ignorable="d" x:Name="root"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary Source="/AmazonS3ExplorerWPF;component/ResourceDictionary/TreeStyles.xaml" ></ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.CommandBindings>
+        <CommandBinding Command="AmazonS3ExplorerWPF:TreeCommands.NewFolder" Executed="TreeCommandBinding_Executed" CanExecute="TreeCommandBinding_CanExecute"/>
+        <CommandBinding Command="AmazonS3ExplorerWPF:TreeCommands.RenameFolder" Executed="TreeCommandBinding_Executed" CanExecute="TreeCommandBinding_CanExecute"/>
+        <CommandBinding Command="AmazonS3ExplorerWPF:TreeCommands.DownloadFolder" Executed="TreeCommandBinding_Executed" CanExecute="TreeCommandBinding_CanExecute"/>
+        <CommandBinding Command="AmazonS3ExplorerWPF:TreeCommands.DeleteFolder" Executed="TreeCommandBinding_Executed" CanExecute="TreeCommandBinding_CanExecute"/>
+
+        <CommandBinding Command="AmazonS3ExplorerWPF:FileListViewCommands.DownloadFile" Executed="FileListCommandBinding_Executed" CanExecute="FileListCommandBinding_CanExecute"/>
+        <CommandBinding Command="AmazonS3ExplorerWPF:FileListViewCommands.ViewFile" Executed="FileListCommandBinding_Executed" CanExecute="FileListCommandBinding_CanExecute"/>
+        <CommandBinding Command="AmazonS3ExplorerWPF:FileListViewCommands.InvalidateFile" Executed="FileListCommandBinding_Executed" CanExecute="FileListCommandBinding_CanExecute"/>
+        <CommandBinding Command="AmazonS3ExplorerWPF:FileListViewCommands.DeleteFile" Executed="FileListCommandBinding_Executed" CanExecute="FileListCommandBinding_CanExecute"/>
+        <CommandBinding Command="AmazonS3ExplorerWPF:FileListViewCommands.RenameFile" Executed="FileListCommandBinding_Executed" CanExecute="FileListCommandBinding_CanExecute"/>
+
+        <CommandBinding Command="Copy" Executed="StandardCommandBinding_Executed" CanExecute="StandardCommandBinding_CanExecute"/>
+        <CommandBinding Command="Cut" Executed="StandardCommandBinding_Executed" CanExecute="StandardCommandBinding_CanExecute"/>
+        <CommandBinding Command="Paste" Executed="StandardCommandBinding_Executed" CanExecute="StandardCommandBinding_CanExecute"/>
+    </UserControl.CommandBindings>
+    <Grid>
+        <Grid.Resources>
+            <AmazonS3ExplorerWPF:BytesToMBConverter x:Key="bytesConverter"/>
+            <AmazonS3ExplorerWPF:InverseBooleanConverter x:Key="inverseBool"/>
+            <AmazonS3ExplorerWPF:AmazonKeyPathConverter x:Key="amazonPathConverter"/>
+        </Grid.Resources>
+        <AmazonS3ExplorerWPF:AdornedControl x:Name="LoadingAdorner"  Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  
+                IsAdornerVisible="{Binding IsWorking, ElementName=root, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+            <AmazonS3ExplorerWPF:AdornedControl.AdornerContent>
+                <Adorner:LoadingWait x:Name="ctrlLoading" CancelOperation="ctrlLoading_CancelOperation"></Adorner:LoadingWait>
+            </AmazonS3ExplorerWPF:AdornedControl.AdornerContent>
+            <Grid  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="4"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Gainsboro" ResizeBehavior="PreviousAndNext"/>
+                <AmazonS3ExplorerWPF:AmazonFolderTree x:Name="FolderTree" VerticalAlignment="Stretch" 
+                             HorizontalAlignment="Stretch" Margin="0"    
+                          TreeNodeStyle="{StaticResource AmazonSimpleFolders}" 
+                          TreeStyle="{StaticResource SimpleTreeStyle}"  Items="{Binding RemoteFolders, ElementName=root}"
+                             SelectNodesOnRightClick="True" SelectedItemChanged="AmazonFolderTree_SelectedItemChanged">
+
+
+                </AmazonS3ExplorerWPF:AmazonFolderTree>
+                <ListView x:Name="listFiles" Grid.Column="2" HorizontalAlignment="Stretch"  Margin="10,38,10,10" VerticalAlignment="Stretch"                          
+                          AllowDrop="True" Drop="ListFiles_Drop" SelectionMode="Extended" >
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Paste" Command="ApplicationCommands.Paste"></MenuItem>
+                        </ContextMenu>
+                    </ListView.ContextMenu>
+                    <ListView.Resources>
+                        <ContextMenu x:Key="fileContextMenu">
+                            <MenuItem Header="View" Command="AmazonS3ExplorerWPF:FileListViewCommands.ViewFile"/>
+                            <MenuItem Header="Download" Command="AmazonS3ExplorerWPF:FileListViewCommands.DownloadFile"/>
+                            <MenuItem Header="Rename" Command="AmazonS3ExplorerWPF:FileListViewCommands.RenameFile"/>
+                            <Separator/>
+                            <MenuItem Header="Cut" Command="ApplicationCommands.Cut"></MenuItem>
+                            <MenuItem Header="Copy" Command="ApplicationCommands.Copy"></MenuItem>
+                            <MenuItem Header="Paste" Command="ApplicationCommands.Paste"></MenuItem>
+                            <Separator/>
+                            <MenuItem Header="Delete" Command="AmazonS3ExplorerWPF:FileListViewCommands.DeleteFile"/>
+                        </ContextMenu>
+                    </ListView.Resources>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Setter Property="ContextMenu" Value="{StaticResource fileContextMenu}"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn DisplayMemberBinding="{Binding Filename}" Header="Name" Width="250"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding FileObject.LastModified}" Header="Last Modified" Width="150"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding FileObject.Size, Converter={StaticResource bytesConverter}}" Header="Size"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <TextBox Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" IsReadOnly="True" Background="Gainsboro" 
+                         Text="{Binding SelectedItem.Prefix, ElementName=FolderTree, Mode=OneWay, Converter={StaticResource amazonPathConverter}}" VerticalAlignment="Top" Width="336"/>
+
+                <Label   Grid.Column="2" Content="Drag files/folders onto the list below" HorizontalAlignment="Left" Margin="351,7,0,0" VerticalAlignment="Top"/>
+                <Button Content="Refresh" Click="RefreshFolder_Click" Grid.Column="2" HorizontalAlignment="Right" Margin="0,7,10,0" VerticalAlignment="Top" Width="75"/>
+            </Grid>
+
+        </AmazonS3ExplorerWPF:AdornedControl>
+    </Grid>
+</UserControl>

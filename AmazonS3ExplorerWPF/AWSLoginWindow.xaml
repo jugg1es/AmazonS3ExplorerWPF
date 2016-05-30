@@ -1,0 +1,30 @@
+﻿<Window x:Class="AmazonS3ExplorerWPF.AWSLoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+         ResizeMode="NoResize"
+        xmlns:local="clr-namespace:AmazonS3ExplorerWPF"
+        mc:Ignorable="d" x:Name="root" WindowStartupLocation="CenterScreen"
+        Title="AWS Login Window" Height="352.755" Width="413.771">
+    <Grid>
+        <Label x:Name="label" Content="Select Profile" HorizontalAlignment="Left" Margin="27,11,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cbProfiles"  HorizontalAlignment="Left" Margin="27,42,0,0" VerticalAlignment="Top" Width="247" ItemsSource="{Binding AmazonProfiles, ElementName=root}"/>
+        <Button Content="Use Profile" HorizontalAlignment="Left" Margin="279,42,0,0" VerticalAlignment="Top" Width="84" Height="22" Click="SelectProfile_Click"/>
+        <CheckBox x:Name="chkUseOnLoad" Content="Automatically use this profile on load" HorizontalAlignment="Left" Margin="146,77,0,0" VerticalAlignment="Top"/>
+        <GroupBox x:Name="gCreateProfile" Header="Create Profile" HorizontalAlignment="Stretch" Margin="10,125,15,10"  VerticalAlignment="Stretch">
+            <Grid>
+                <Label x:Name="label1" Content="Profile name" HorizontalAlignment="Left" Margin="10,13,0,0" VerticalAlignment="Top"/>
+                <TextBox x:Name="txtProfileName" HorizontalAlignment="Left" Height="23" Margin="92,13,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="259"/>
+                <Label x:Name="label1_Copy" Content="Access Key" HorizontalAlignment="Left" Margin="20,48,0,0" VerticalAlignment="Top"/>
+                <PasswordBox x:Name="txtAccessKey" HorizontalAlignment="Left" Height="23" Margin="92,48,0,0" VerticalAlignment="Top" Width="259"/>
+                <Label x:Name="label1_Copy1" Content="Secret" HorizontalAlignment="Left" Margin="44,79,0,0" VerticalAlignment="Top"/>
+                <PasswordBox x:Name="txtSecret" HorizontalAlignment="Left" Height="23" Margin="92,82,0,0"  VerticalAlignment="Top" Width="259"/>
+                <Button  Content="Create Profile" Click="CreateAWSProfile_Click" HorizontalAlignment="Right" Margin="0,0,20,10" VerticalAlignment="Bottom" Width="135" Height="25"/>
+
+            </Grid>
+        </GroupBox>
+        <Button Content="Manage" HorizontalAlignment="Left" Margin="27,70,0,0" VerticalAlignment="Top" Width="61" Height="22" Click="ManageProfiles_Click"/>
+
+    </Grid>
+</Window>

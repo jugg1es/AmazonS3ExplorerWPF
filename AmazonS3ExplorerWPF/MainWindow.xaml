@@ -1,0 +1,34 @@
+﻿<Window xmlns:Controls="clr-namespace:AmazonS3ExplorerWPF.Controls"  xmlns:Adorner="clr-namespace:AmazonS3ExplorerWPF.Controls.Adorner"  x:Class="AmazonS3ExplorerWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:AmazonS3ExplorerWPF="clr-namespace:AmazonS3ExplorerWPF"
+        x:Name="root"
+        mc:Ignorable="d"
+        Title="Amazon S3 Explorer" Height="600" Width="1000">
+    <Window.Resources>
+        <ResourceDictionary Source="/AmazonS3ExplorerWPF;component/ResourceDictionary/TreeStyles.xaml" ></ResourceDictionary>
+    </Window.Resources>
+    <DockPanel>
+        <Grid  DockPanel.Dock="Top" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" Background="White" Height="30">
+                <Label Content="Select Bucket" HorizontalAlignment="Left" VerticalAlignment="Center" IsEnabled="{Binding Authenticated, ElementName=root}"  Margin="3"/>
+                <ComboBox x:Name="cbBuckets" HorizontalAlignment="Left" VerticalAlignment="Center"  Width="207" IsEnabled="{Binding Authenticated, ElementName=root}"
+                       ItemsSource="{Binding}" DataContext="{Binding Buckets, ElementName=root}"  Margin="3"/>
+                <Button Content="Get Bucket Contents" HorizontalAlignment="Left" VerticalAlignment="Center" Width="131" Margin="3"
+                    IsEnabled="{Binding Authenticated, ElementName=root}" Click="LoadBucket_Click"/>
+            </StackPanel>
+            <Button Grid.Column="1" Content="Change Profile" HorizontalAlignment="Left" Width="100" VerticalAlignment="Center" Margin="3" Click="ChangeProfile_Click"/>
+        </Grid>
+        <Controls:AmazonFileManagerControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                IsEnabled="{Binding Authenticated, ElementName=root}"  x:Name="ctrlFileManager"></Controls:AmazonFileManagerControl>
+        
+        
+    </DockPanel>
+   
+</Window>
