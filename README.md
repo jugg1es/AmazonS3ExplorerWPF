@@ -1,6 +1,7 @@
 # AmazonS3ExplorerWPF
 WPF-based file explorer for Amazon S3
 
+
 Why?
 ----
 
@@ -38,5 +39,8 @@ Requirements
 - Amazon Web Services (AWS) account
 - At least one S3 bucket
     
-   
+Screenshot
+----------
+
+![alt tag](https://github.com/jugg1es/AmazonS3ExplorerWPF/blob/master/screenshot.png)
     
