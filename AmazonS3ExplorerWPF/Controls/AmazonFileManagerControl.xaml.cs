@@ -101,7 +101,7 @@ namespace AmazonS3ExplorerWPF.Controls
         {
             if (GetSelected() == null) return;
 
-            GetBucketContents();
+            GetBucketContents(FolderTree.SelectedItem);
 
         }
 
