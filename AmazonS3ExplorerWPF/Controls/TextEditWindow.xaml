@@ -1,0 +1,16 @@
+﻿<Window x:Class="AmazonS3ExplorerWPF.Controls.TextEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AmazonS3ExplorerWPF.Controls"
+        mc:Ignorable="d" WindowStartupLocation="CenterOwner" ResizeMode="NoResize" WindowStyle="ToolWindow"
+        Title="TextEditWindow" Height="156" Width="369">
+    <Grid>
+
+        <Button Click="Cancel_Click"  Content="Cancel" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="75"/>
+        <Button Click="Save_Click"  Content="Save" HorizontalAlignment="Right" Margin="0,0,90,10" VerticalAlignment="Bottom" Width="121"/>
+        <Label x:Name="lblField" Content="Field Description" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtValue" Height="23" Margin="10,41,10,0" TextWrapping="NoWrap" VerticalAlignment="Top" KeyUp="txtValue_KeyUp"/>
+    </Grid>
+</Window>

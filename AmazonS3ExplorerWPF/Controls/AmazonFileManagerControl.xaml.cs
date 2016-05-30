@@ -115,7 +115,12 @@ namespace AmazonS3ExplorerWPF.Controls
         }
         private string GetInputString(string title, string oldString)
         {
-
+            TextEditWindow winEdit = new TextEditWindow(title, oldString);
+            winEdit.Owner = Window.GetWindow(this);
+            if (winEdit.ShowDialog() == true)
+            {
+                return winEdit.TextValue;
+            }
             return null;
         }
 

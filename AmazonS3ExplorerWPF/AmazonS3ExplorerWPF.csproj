@@ -104,6 +104,9 @@
     <Compile Include="Controls\AmazonFileManagerControl.xaml.cs">
       <DependentUpon>AmazonFileManagerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TextEditWindow.xaml.cs">
+      <DependentUpon>TextEditWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SupportClasses\Converters.cs" />
     <Compile Include="SupportClasses\Structures.cs" />
     <Compile Include="TreeView\AmazonFolderTree.cs" />
@@ -124,6 +127,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\AmazonFileManagerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TextEditWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
